@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
@@ -63,7 +65,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_article, parent, false);
         final ViewHolder vh = new ViewHolder(view);
-//        animateViewsIn(vh);
+        animateViewsIn(vh);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,24 +113,24 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
     }
 
-//    private void animateViewsIn(ViewHolder viewHolder) {
-//        View view = viewHolder.itemView;
-//        Interpolator interpolator =
-//                AnimationUtils.loadInterpolator(mContext, android.R.interpolator.linear_out_slow_in);
-//
-//        view.setVisibility(View.VISIBLE);
-//        view.setTranslationY(mAnimationOffset);
-//        view.setAlpha(0.85f);
-//        // then animate back to natural position
-//        view.animate()
-//                .translationY(0f)
-//                .alpha(1f)
-//                .setInterpolator(interpolator)
-//                .setDuration(1000L)
-//                .start();
-//        // increase the offset distance for the next view
-//        mAnimationOffset *= 1.5f;
-//    }
+    private void animateViewsIn(ViewHolder viewHolder) {
+        View view = viewHolder.itemView;
+        Interpolator interpolator =
+                AnimationUtils.loadInterpolator(mContext, android.R.interpolator.linear_out_slow_in);
+
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationY(mAnimationOffset);
+        view.setAlpha(0.85f);
+        // then animate back to natural position
+        view.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setInterpolator(interpolator)
+                .setDuration(1000L)
+                .start();
+        // increase the offset distance for the next view
+        mAnimationOffset *= 1.5f;
+    }
 
     @Override
     public int getItemCount() {

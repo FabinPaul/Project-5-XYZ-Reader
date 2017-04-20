@@ -8,5 +8,15 @@
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="offset_y">300dp</dimen>
+    <dimen name="appbar_max_height">112dp</dimen>
+
+    <dimen name="match_parent">-1px</dimen>
+    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="title_padding">16dp</dimen>
+    <dimen name="detail_app_bar_max_height">320dp</dimen>
+    <dimen name="title_bar_size">80dp</dimen>
+    <dimen name="title_margin_bottom">40dp</dimen>
+    <dimen name="subtitle_margin">20dp</dimen>
+    <dimen name="article_body_margin_top">8dp</dimen>
 
 </resources>

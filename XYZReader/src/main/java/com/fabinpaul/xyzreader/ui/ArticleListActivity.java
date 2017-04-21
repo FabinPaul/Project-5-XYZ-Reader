@@ -17,7 +17,7 @@ import android.support.v7.widget.Toolbar;
 import com.fabinpaul.xyzreader.R;
 import com.fabinpaul.xyzreader.data.ArticleLoader;
 import com.fabinpaul.xyzreader.data.ItemsContract;
-import com.fabinpaul.xyzreader.data.UpdaterService;
+import com.fabinpaul.xyzreader.sync.UpdaterService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,17 +52,19 @@ public class ArticleListActivity extends ActionBarActivity implements
         getLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
-            refresh();
+            refresh(false);
         }
     }
 
     @Override
     public void onRefresh() {
-        refresh();
+        refresh(true);
     }
 
-    public void refresh(){
-        startService(new Intent(this, UpdaterService.class));
+    public void refresh(boolean syncImmediately){
+        Intent intent = new Intent(this, UpdaterService.class);
+        intent.putExtra(UpdaterService.EXTRA_SYNC_IMMEDIATELY,syncImmediately);
+        startService(intent);
     }
 
     @Override

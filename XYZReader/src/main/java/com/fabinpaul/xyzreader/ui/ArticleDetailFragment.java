@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -48,11 +50,6 @@ public class ArticleDetailFragment extends Fragment implements
     private Cursor mCursor;
     private long mItemId;
     private int mMutedColor = 0xFF333333;
-//    private ColorDrawable mStatusBarColorDrawable;
-//
-//    private int mTopInset;
-//    private boolean mIsCard = false;
-//    private int mStatusBarFullOpacityBottom;
 
     private Target mArticleImageTarget;
     private Unbinder mUnBinder;
@@ -99,9 +96,6 @@ public class ArticleDetailFragment extends Fragment implements
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
 
-//        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-//        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-//                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
 
@@ -133,8 +127,10 @@ public class ArticleDetailFragment extends Fragment implements
     private void updateMetaBar(Bitmap bitmap) {
         Palette palette = Palette.generate(bitmap, 12);
         mMutedColor = palette.getDarkMutedColor(0xFF333333);
-        mMetaBar.setBackgroundColor(mMutedColor);
-        mCollapsingToolbarLayout.setContentScrimColor(mMutedColor);
+        int[] gradientColors = {mMutedColor,mMutedColor,getActivity().getResources().getColor(android.R.color.transparent)};
+        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,gradientColors);
+        gradientDrawable.setGradientCenter(0.4f,0.4f);
+        mMetaBar.setBackground(gradientDrawable);
     }
 
     private void bindViews() {
@@ -143,7 +139,7 @@ public class ArticleDetailFragment extends Fragment implements
             return;
 
         mBylineView.setMovementMethod(new LinkMovementMethod());
-//        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mCoordinatorLayout.setAlpha(0);
@@ -207,11 +203,9 @@ public class ArticleDetailFragment extends Fragment implements
                 }
             };
             Picasso.with(getActivity()).load(mCursor.getString(ArticleLoader.Query.PHOTO_URL)).into(mArticleImageTarget);
+
         } else {
             mCoordinatorLayout.setVisibility(View.GONE);
-//            mTitleView.setText("N/A");
-            mBylineView.setText("N/A");
-            mBodyView.setText("N/A");
         }
     }
 

@@ -1,10 +1,12 @@
-package com.fabinpaul.xyzreader.data;
+package com.fabinpaul.xyzreader.sync;
 
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,6 +15,8 @@ import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 
+import com.fabinpaul.xyzreader.R;
+import com.fabinpaul.xyzreader.data.ItemsContract;
 import com.fabinpaul.xyzreader.remote.RemoteEndpointUtil;
 
 import org.json.JSONArray;
@@ -29,9 +33,14 @@ public class UpdaterService extends IntentService {
     private static final String TAG = "UpdaterService";
 
     public static final String BROADCAST_ACTION_STATE_CHANGE
-            = "com.example.xyzreader.intent.action.STATE_CHANGE";
+            = "com.fabinpaul.xyzreader.intent.action.STATE_CHANGE";
     public static final String EXTRA_REFRESHING
-            = "com.example.xyzreader.intent.extra.REFRESHING";
+            = "com.fabinpaul.xyzreader.intent.extra.REFRESHING";
+
+    public static final String EXTRA_SYNC_IMMEDIATELY
+            = "com.fabinpaul.xyzreader.intent.extra.SYNC_IMMEDIATELY";
+
+    public static final String SYNC_TIME = "com.fabinpaul.xyzreader.shared_pref.SYNC_TIME";
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -39,12 +48,19 @@ public class UpdaterService extends IntentService {
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
+    private static final long STALE_PERIOD = 3 * 60 * 60 * 1000; // 3 hours
+
     public UpdaterService() {
         super(TAG);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        boolean syncImmediately = intent.getBooleanExtra(EXTRA_SYNC_IMMEDIATELY, false);
+
+        if (!isSyncNeeded(syncImmediately))
+            return;
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -98,6 +114,7 @@ public class UpdaterService extends IntentService {
             }
 
             getContentResolver().applyBatch(ItemsContract.CONTENT_AUTHORITY, cpo);
+            setSyncTime();
 
         } catch (JSONException | RemoteException | OperationApplicationException e) {
             Log.e(TAG, "Error updating content.", e);
@@ -115,5 +132,21 @@ public class UpdaterService extends IntentService {
             Log.i(TAG, "passing today's date");
             return new Date();
         }
+    }
+
+    private void setSyncTime() {
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.sync_preference), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(SYNC_TIME, System.currentTimeMillis());
+        editor.apply();
+    }
+
+    private boolean isSyncNeeded(boolean syncImmediately) {
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.sync_preference), Context.MODE_PRIVATE);
+        long lastSyncTime = preferences.getLong(SYNC_TIME, System.currentTimeMillis());
+        if (syncImmediately)
+            return true;
+        else
+            return lastSyncTime == System.currentTimeMillis() || lastSyncTime + STALE_PERIOD <= System.currentTimeMillis();
     }
 }

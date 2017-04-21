@@ -28,7 +28,7 @@ import butterknife.Unbinder;
 public class ArticleDetailActivity extends ActionBarActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String EXTRA_SELECTED_ITEM_ID = "com.example.xyzreader.ui.EXTRA_SELECTED_ITEM_ID";
+    private static final String EXTRA_SELECTED_ITEM_ID = "com.fabinpaul.xyzreader.ui.EXTRA_SELECTED_ITEM_ID";
     private Cursor mCursor;
     private long mSelectedItemId;
 

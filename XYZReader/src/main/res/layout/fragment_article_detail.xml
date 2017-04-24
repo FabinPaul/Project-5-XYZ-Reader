@@ -8,18 +8,18 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/detail_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/detail_app_bar_max_height"
+        android:layout_height="@dimen/detail_appbar_max_height"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/detail_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleMarginBottom="@dimen/title_margin_bottom"
+            app:expandedTitleMarginBottom="@dimen/detail_title_margin_bottom"
             app:layout_scrollFlags="scroll">
 
             <ImageView
-                android:id="@+id/photo"
+                android:id="@+id/detail_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -33,32 +33,22 @@
             <LinearLayout
                 android:id="@+id/meta_bar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/title_bar_size"
+                android:layout_height="@dimen/detail_meta_bar_size"
                 android:layout_gravity="bottom"
-                android:elevation="@dimen/app_bar_elevation"
-                android:gravity="bottom"
+                android:elevation="@dimen/detail_meta_bar_elevation"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/title_padding"
-                android:paddingLeft="@dimen/title_padding"
-                android:paddingRight="@dimen/title_padding"
-                android:paddingTop="@dimen/title_padding">
-
-                <!--<TextView-->
-                <!--android:id="@+id/article_title"-->
-                <!--style="?android:attr/textAppearanceLarge"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:maxLines="1"-->
-                <!--android:textColor="#fff"-->
-                <!--android:textStyle="bold"-->
-                <!--android:visibility="invisible"/>-->
+                android:paddingBottom="@dimen/detail_meta_bar_padding"
+                android:paddingLeft="@dimen/detail_meta_bar_padding"
+                android:paddingRight="@dimen/detail_meta_bar_padding"
+                android:gravity="bottom"
+                android:paddingTop="@dimen/detail_meta_bar_padding">
 
                 <TextView
-                    android:id="@+id/article_byline"
+                    android:id="@+id/detail_byline"
                     style="?android:attr/textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/subtitle_margin"
+                    android:layout_marginStart="@dimen/detail_meta_bar_margin"
                     android:textColor="#8fff"/>
 
             </LinearLayout>
@@ -68,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                android:elevation="@dimen/app_bar_elevation"
+                android:elevation="@dimen/detail_meta_bar_elevation"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
@@ -78,23 +68,22 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="@dimen/detail_card_max_width"
         android:layout_height="match_parent"
-        android:elevation="2dp"
+        android:elevation="@dimen/detail_body_elevation"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/article_body_margin_top"
+        android:layout_marginTop="@dimen/detail_body_margin_top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <TextView
-            android:id="@+id/article_body"
+            android:id="@+id/detail_body"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/detail_inner_horiz_margin"
-            android:layout_marginRight="@dimen/detail_inner_horiz_margin"
             android:layout_weight="1"
             android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
-            android:paddingBottom="@dimen/detail_body_bottom_margin"
             android:textColorLink="?attr/colorAccent"
+            android:layout_marginStart="@dimen/content_margin"
+            android:layout_marginEnd="@dimen/content_margin"
             android:textSize="@dimen/detail_body_text_size"/>
 
     </android.support.v4.widget.NestedScrollView>

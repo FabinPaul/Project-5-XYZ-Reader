@@ -1,22 +1,35 @@
 <resources>
+
+    <dimen name="match_parent">-1px</dimen>
+    <dimen name="content_margin">16dp</dimen>
+
+    <!-- list -->
+    <dimen name="article_list_margin">4dp</dimen>
+    <!--<dimen name="list_toolbar_side_margin">0dp</dimen>-->
+    <integer name="list_column_count">2</integer>
+
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
     <dimen name="detail_body_text_size">22sp</dimen>
+
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
-    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_elevation">4dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="offset_y">300dp</dimen>
-    <dimen name="appbar_max_height">112dp</dimen>
+    <dimen name="article_appbar_max_height">112dp</dimen>
 
-    <dimen name="match_parent">-1px</dimen>
-    <dimen name="app_bar_elevation">4dp</dimen>
-    <dimen name="title_padding">16dp</dimen>
-    <dimen name="detail_app_bar_max_height">320dp</dimen>
-    <dimen name="title_bar_size">80dp</dimen>
-    <dimen name="title_margin_bottom">40dp</dimen>
-    <dimen name="subtitle_margin">20dp</dimen>
-    <dimen name="article_body_margin_top">8dp</dimen>
+
+    <dimen name="detail_meta_bar_elevation">4dp</dimen>
+    <dimen name="detail_meta_bar_padding">16dp</dimen>
+    <dimen name="detail_appbar_max_height">320dp</dimen>
+    <dimen name="detail_meta_bar_size">80dp</dimen>
+    <dimen name="detail_title_margin_bottom">40dp</dimen>
+    <dimen name="detail_meta_bar_margin">20dp</dimen>
+    <dimen name="detail_body_margin_top">8dp</dimen>
+    <dimen name="detail_body_elevation">2dp</dimen>
+
+    <dimen name="detail_card_max_width">@dimen/match_parent</dimen>
 
 </resources>

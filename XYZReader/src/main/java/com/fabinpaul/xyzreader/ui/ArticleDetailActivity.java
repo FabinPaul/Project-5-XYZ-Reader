@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -25,16 +25,16 @@ import butterknife.Unbinder;
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
-public class ArticleDetailActivity extends ActionBarActivity
+public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String EXTRA_SELECTED_ITEM_ID = "com.fabinpaul.xyzreader.ui.EXTRA_SELECTED_ITEM_ID";
     private Cursor mCursor;
     private long mSelectedItemId;
 
-    @BindView(R.id.pager)
+    @BindView(R.id.detail_pager)
     ViewPager mPager;
-    private MyPagerAdapter mPagerAdapter;
+    private DetailPagerAdapter mDetailPagerAdapter;
     private Unbinder mUnBinder;
 
     @Override
@@ -50,9 +50,9 @@ public class ArticleDetailActivity extends ActionBarActivity
 
         getLoaderManager().initLoader(0, null, this);
 
-        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+        mDetailPagerAdapter = new DetailPagerAdapter(getFragmentManager());
 
-        mPager.setAdapter(mPagerAdapter);
+        mPager.setAdapter(mDetailPagerAdapter);
         mPager.setPageMargin((int) TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
         mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
@@ -90,7 +90,7 @@ public class ArticleDetailActivity extends ActionBarActivity
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mCursor = cursor;
-        mPagerAdapter.notifyDataSetChanged();
+        mDetailPagerAdapter.notifyDataSetChanged();
 
         // Select the start ID
         if (mSelectedItemId > 0) {
@@ -110,11 +110,11 @@ public class ArticleDetailActivity extends ActionBarActivity
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mCursor = null;
-        mPagerAdapter.notifyDataSetChanged();
+        mDetailPagerAdapter.notifyDataSetChanged();
     }
 
-    private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        public MyPagerAdapter(FragmentManager fm) {
+    private class DetailPagerAdapter extends FragmentStatePagerAdapter {
+        public DetailPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

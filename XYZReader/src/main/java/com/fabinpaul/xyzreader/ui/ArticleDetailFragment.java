@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,6 +17,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -43,35 +44,45 @@ import butterknife.Unbinder;
  */
 public class ArticleDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "ArticleDetailFragment";
 
-    public static final String ARG_ITEM_ID = "item_id";
+    private static final String TAG = ArticleDetailFragment.class.getSimpleName();
+    private static final int DEFAULT_MUTED_COLOR = 0xFF333333;
 
-    private Cursor mCursor;
+    public static final String ARG_ITEM_ID = "com.fabinpaul.xyzreader.ui.item_id";
+
+    private Cursor mDetailCursor;
     private long mItemId;
-    private int mMutedColor = 0xFF333333;
 
+    //This was made global as target as weak reference and will be garbage collected onStop.
+    @SuppressWarnings("FieldCanBeLocal")
     private Target mArticleImageTarget;
     private Unbinder mUnBinder;
 
-    @BindView(R.id.photo)
+    @BindView(R.id.detail_photo)
     ImageView mPhotoView;
     @BindView(R.id.meta_bar)
-    View mMetaBar;
-    @BindView(R.id.article_byline)
+    View mMetaBarView;
+    @BindView(R.id.detail_byline)
     TextView mBylineView;
-    @BindView(R.id.article_body)
+    @BindView(R.id.detail_body)
     TextView mBodyView;
     @BindView(R.id.article_detail_frag_root)
-    CoordinatorLayout mCoordinatorLayout;
+    CoordinatorLayout mCoordinatorLayoutView;
     @BindView(R.id.share_fab)
-    FloatingActionButton mShareFAB;
+    FloatingActionButton mShareFABView;
     @BindView(R.id.detail_toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.detail_collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
+    Toolbar mToolbarView;
     @BindView(R.id.detail_app_bar)
-    AppBarLayout mAppBarLayout;
+    AppBarLayout mAppBarLayoutView;
+    @BindView(R.id.detail_collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbarLayoutView;
+
+    @Nullable
+    @BindView(R.id.detail_card)
+    CardView mCardView;
+    @Nullable
+    @BindView(R.id.article_title)
+    TextView mTitleView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -126,47 +137,62 @@ public class ArticleDetailFragment extends Fragment implements
 
     private void updateMetaBar(Bitmap bitmap) {
         Palette palette = Palette.generate(bitmap, 12);
-        mMutedColor = palette.getDarkMutedColor(0xFF333333);
-        int[] gradientColors = {mMutedColor,mMutedColor,getActivity().getResources().getColor(android.R.color.transparent)};
-        GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,gradientColors);
-        gradientDrawable.setGradientCenter(0.4f,0.4f);
-        mMetaBar.setBackground(gradientDrawable);
+        int mutedColor = palette.getDarkMutedColor(DEFAULT_MUTED_COLOR);
+        if (mCardView == null) {
+            int[] gradientColors = {mutedColor, mutedColor, getActivity().getResources().getColor(android.R.color.transparent)};
+            GradientDrawable gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors);
+            gradientDrawable.setGradientCenter(0.4f, 0.4f);
+            mMetaBarView.setBackground(gradientDrawable);
+        } else {
+            mMetaBarView.setBackgroundColor(mutedColor);
+            mCollapsingToolbarLayoutView.setContentScrimColor(mutedColor);
+            mCollapsingToolbarLayoutView.setStatusBarScrimColor(mutedColor);
+        }
     }
 
     private void bindViews() {
-
-        if (mCoordinatorLayout == null)
+        if (mCoordinatorLayoutView == null)
             return;
 
         mBylineView.setMovementMethod(new LinkMovementMethod());
-        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
-        if (mCursor != null) {
-            mCoordinatorLayout.setAlpha(0);
-            mCoordinatorLayout.setVisibility(View.VISIBLE);
-            mCoordinatorLayout.animate().alpha(1);
-            final String title = mCursor.getString(ArticleLoader.Query.TITLE);
+        if (mDetailCursor != null) {
+            mCoordinatorLayoutView.setAlpha(0);
+            mCoordinatorLayoutView.setVisibility(View.VISIBLE);
+            mCoordinatorLayoutView.animate().alpha(1);
+            final String title = mDetailCursor.getString(ArticleLoader.Query.TITLE);
 
-            mToolbar.setTitle(title);
-            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            if (mCardView == null) {
+                mToolbarView.setTitle(title);
+            } else {
+                mToolbarView.setTitle("");
+            }
+            mToolbarView.setNavigationIcon(R.drawable.ic_arrow_back);
+            mToolbarView.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((AppCompatActivity) getActivity()).onSupportNavigateUp();
                 }
             });
-            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbarView);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+            if (mTitleView != null)
+                mTitleView.setText(title);
 
             mBylineView.setText(Html.fromHtml(
-                    mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE) + " by <font color='#ffffff'>"
-                            + mCursor.getString(ArticleLoader.Query.AUTHOR)
+                    mDetailCursor.getString(ArticleLoader.Query.PUBLISHED_DATE) + " by <font color='#ffffff'>"
+                            + mDetailCursor.getString(ArticleLoader.Query.AUTHOR)
                             + "</font>"));
 
-            final String articleBody = mCursor.getString(ArticleLoader.Query.BODY);
+            final String articleBody = mDetailCursor.getString(ArticleLoader.Query.BODY);
             mBodyView.setText(articleBody);
             mBodyView.invalidate();
 
-            mShareFAB.setOnClickListener(new View.OnClickListener() {
+            mShareFABView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
@@ -177,16 +203,18 @@ public class ArticleDetailFragment extends Fragment implements
                 }
             });
 
-            mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    mBylineView.setAlpha(0.6f + (verticalOffset / (float) appBarLayout.getTotalScrollRange()));
-                }
-            });
+            if (mCardView == null)
+                mAppBarLayoutView.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                    @Override
+                    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                        mBylineView.setAlpha(0.6f + (verticalOffset / (float) appBarLayout.getTotalScrollRange()));
+                    }
+                });
+
             mArticleImageTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    if (bitmap != null) {
+                    if (bitmap != null && mPhotoView != null) {
                         mPhotoView.setImageBitmap(bitmap);
                         updateMetaBar(bitmap);
                     }
@@ -202,10 +230,11 @@ public class ArticleDetailFragment extends Fragment implements
 
                 }
             };
-            Picasso.with(getActivity()).load(mCursor.getString(ArticleLoader.Query.PHOTO_URL)).into(mArticleImageTarget);
+            Picasso.with(getActivity()).load(mDetailCursor.getString(ArticleLoader.Query.PHOTO_URL)).into(mArticleImageTarget);
 
+            mBodyView.requestLayout();
         } else {
-            mCoordinatorLayout.setVisibility(View.GONE);
+            mCoordinatorLayoutView.setVisibility(View.GONE);
         }
     }
 
@@ -223,11 +252,11 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        mCursor = cursor;
-        if (mCursor != null && !mCursor.moveToFirst()) {
+        mDetailCursor = cursor;
+        if (mDetailCursor != null && !mDetailCursor.moveToFirst()) {
             Log.e(TAG, "Error reading item detail cursor");
-            mCursor.close();
-            mCursor = null;
+            mDetailCursor.close();
+            mDetailCursor = null;
         }
 
         bindViews();
@@ -235,7 +264,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        mCursor = null;
+        mDetailCursor = null;
         bindViews();
     }
 

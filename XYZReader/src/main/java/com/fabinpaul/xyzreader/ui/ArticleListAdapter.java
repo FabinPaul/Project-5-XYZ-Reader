@@ -24,8 +24,6 @@ import com.squareup.picasso.Picasso;
 
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
 
-    private static final String TAG = ArticleListAdapter.class.getSimpleName();
-
     private Cursor mCursor;
     private final Context mContext;
     private OnClickListener mOnClickListener;
@@ -101,7 +99,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        return (mCursor != null) ? mCursor.getCount() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -115,5 +113,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }
+    }
+
+    public void swapCursor(Cursor cursor) {
+        mCursor = cursor;
+        notifyDataSetChanged();
     }
 }

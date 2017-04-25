@@ -2,9 +2,9 @@
 <resources>
 
     <!-- list -->
-    <dimen name="article_list_margin">64dp</dimen>
-    <!--<dimen name="list_toolbar_side_margin">52dp</dimen> &lt;!&ndash; minus 64 - 12 &ndash;&gt;-->
+    <dimen name="article_list_margin">32dp</dimen>
     <integer name="list_column_count">3</integer>
+    <dimen name="article_list_max_width">800dp</dimen>
 
     <!-- detail -->
     <dimen name="detail_card_max_width">600dp</dimen>

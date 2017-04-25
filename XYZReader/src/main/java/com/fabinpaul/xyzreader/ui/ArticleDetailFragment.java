@@ -66,7 +66,7 @@ public class ArticleDetailFragment extends Fragment implements
     TextView mBylineView;
     @BindView(R.id.detail_body)
     TextView mBodyView;
-    @BindView(R.id.article_detail_frag_root)
+    @BindView(R.id.detail_frag_root)
     CoordinatorLayout mCoordinatorLayoutView;
     @BindView(R.id.share_fab)
     FloatingActionButton mShareFABView;

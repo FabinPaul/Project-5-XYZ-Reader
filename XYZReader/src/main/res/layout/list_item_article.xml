@@ -1,11 +1,11 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginBottom="@dimen/article_item_margin"
+    android:layout_marginLeft="@dimen/article_item_margin"
+    android:layout_marginRight="@dimen/article_item_margin"
+    android:layout_marginTop="@dimen/article_item_margin"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground">
@@ -16,35 +16,48 @@
         android:orientation="vertical">
 
         <!--suppress AndroidLintContentDescription -->
-        <com.fabinpaul.xyzreader.ui.DynamicHeightImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/photo_placeholder"/>
 
-        <TextView
-            android:id="@+id/article_title"
-            style="@style/TextAppearance.AppCompat.Subhead"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="4dp"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+            android:layout_height="wrap_content">
+
+            <com.fabinpaul.xyzreader.ui.DynamicHeightImageView
+                android:id="@+id/article_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/photo_placeholder"/>
+
+            <TextView
+                android:id="@+id/article_title"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:background="@color/transparent_34_black"
+                android:layout_gravity="bottom"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
+
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/article_subtitle"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            android:textColor="#6000"
-            android:maxLines="2"
-            android:ellipsize="end" />
+            android:paddingTop="8dp"
+            android:textColor="@color/transparent_40_black"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

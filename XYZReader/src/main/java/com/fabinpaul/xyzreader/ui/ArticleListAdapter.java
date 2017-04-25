@@ -109,7 +109,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            thumbnailView = (DynamicHeightImageView) view.findViewById(R.id.thumbnail);
+            thumbnailView = (DynamicHeightImageView) view.findViewById(R.id.article_thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }

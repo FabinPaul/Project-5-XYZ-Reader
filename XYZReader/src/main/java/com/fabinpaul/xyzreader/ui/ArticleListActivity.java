@@ -66,9 +66,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         refresh(true);
     }
 
-    public void refresh(boolean syncImmediately){
+    public void refresh(boolean syncImmediately) {
         Intent intent = new Intent(this, UpdaterService.class);
-        intent.putExtra(UpdaterService.EXTRA_SYNC_IMMEDIATELY,syncImmediately);
+        intent.putExtra(UpdaterService.EXTRA_SYNC_IMMEDIATELY, syncImmediately);
         startService(intent);
     }
 
@@ -116,7 +116,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         ItemsContract.Items.buildItemUri(mAdapter.getItemId(position))));
             }
         });
-        if(mIsRefreshing)
+        if (mIsRefreshing)
             mAdapter.swapCursor(null);
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);

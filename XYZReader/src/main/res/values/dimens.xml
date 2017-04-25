@@ -5,8 +5,10 @@
 
     <!-- list -->
     <dimen name="article_list_margin">4dp</dimen>
-    <!--<dimen name="list_toolbar_side_margin">0dp</dimen>-->
     <integer name="list_column_count">2</integer>
+
+    <dimen name="article_item_margin">8dp</dimen>
+    <dimen name="article_list_max_width">@dimen/match_parent</dimen>
 
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
@@ -19,7 +21,6 @@
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="offset_y">300dp</dimen>
     <dimen name="article_appbar_max_height">112dp</dimen>
-
 
     <dimen name="detail_meta_bar_elevation">4dp</dimen>
     <dimen name="detail_meta_bar_padding">16dp</dimen>

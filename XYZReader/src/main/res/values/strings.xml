@@ -1,12 +1,8 @@
 <resources>
 
-    <string name="app_name">XYZ Reader</string>
-
-    <string name="action_refresh">Refresh</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Fabin\'s XYZ Reader</string>
     <string name="action_share">Share</string>
 
-    <string name="up">Up</string>
     <string name="sync_preference" translatable="false">sync_preference</string>
 
 </resources>

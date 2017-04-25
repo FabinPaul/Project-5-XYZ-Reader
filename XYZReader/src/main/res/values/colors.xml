@@ -21,9 +21,14 @@
     <!--<color name="theme_primary">#04561A</color>-->
     <!--<color name="theme_primary_dark">#04561A</color>-->
     <!--<color name="theme_accent">#04561A</color>-->
-    <color name="ltgray">#ffe0e0e0</color>
+    <!--<color name="ltgray">#ffe0e0e0</color>-->
 
     <color name="material_indigo_500">#3F51B5</color>
     <color name="material_indigo_700">#303F9F</color>
     <color name="material_orange_400">#FF9100</color>
+
+    <color name="white">#ffff</color>
+    <color name="transparent_54_white">#8fff</color>
+    <color name="transparent_40_black">#6000</color>
+    <color name="transparent_34_black">#55000000</color>
 </resources>

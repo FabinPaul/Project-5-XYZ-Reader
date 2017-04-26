@@ -100,6 +100,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:background="@drawable/add_fab_background"
         android:contentDescription="@string/action_share"
+        app:layout_behavior="com.fabinpaul.xyzreader.ui.ScrollFABBehavior"
         android:src="@drawable/ic_share"
         app:elevation="@dimen/fab_elevation"
         app:layout_anchorGravity="bottom|end"/>

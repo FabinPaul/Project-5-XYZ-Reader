@@ -125,6 +125,7 @@
         android:background="@drawable/add_fab_background"
         android:contentDescription="@string/action_share"
         android:src="@drawable/ic_share"
+        app:layout_behavior="com.fabinpaul.xyzreader.ui.ScrollFABBehavior"
         app:elevation="@dimen/fab_elevation"
         app:layout_anchorGravity="bottom|end"/>
 
